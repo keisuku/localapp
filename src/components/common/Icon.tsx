@@ -1,0 +1,80 @@
+import {
+  BarChart3,
+  BookOpen,
+  Box,
+  Briefcase,
+  Calendar,
+  ClipboardList,
+  Database,
+  FileText,
+  Folder,
+  Globe,
+  Heart,
+  Home,
+  Layers,
+  Lightbulb,
+  List,
+  Mail,
+  MessageSquare,
+  Package,
+  Phone,
+  PieChart,
+  Settings,
+  ShieldCheck,
+  ShoppingCart,
+  Star,
+  Table,
+  Tag,
+  Target,
+  Truck,
+  Users,
+  Wallet,
+  Wine,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react';
+
+/**
+ * モジュールが labels.icon で指定できるアイコン。
+ * バンドルサイズを抑えるため必要なものだけ登録する。
+ * 新しいモジュールで別のアイコンを使う場合はここに 1 行追加する。
+ */
+const ICONS: Record<string, LucideIcon> = {
+  BarChart3,
+  BookOpen,
+  Box,
+  Briefcase,
+  Calendar,
+  ClipboardList,
+  Database,
+  FileText,
+  Folder,
+  Globe,
+  Heart,
+  Home,
+  Layers,
+  Lightbulb,
+  List,
+  Mail,
+  MessageSquare,
+  Package,
+  Phone,
+  PieChart,
+  Settings,
+  ShieldCheck,
+  ShoppingCart,
+  Star,
+  Table,
+  Tag,
+  Target,
+  Truck,
+  Users,
+  Wallet,
+  Wine,
+  Wrench,
+};
+
+export function ModuleIcon({ name, className }: { name: string; className?: string }) {
+  const Comp = ICONS[name] ?? Box;
+  return <Comp className={className} />;
+}
