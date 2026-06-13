@@ -7,6 +7,7 @@ function parseHash(hash: string): Route | null {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   if (parts.length === 0) return null;
   if (parts[0] === 'settings') return { kind: 'settings' };
+  if (parts[0] === 'tools') return { kind: 'tools' };
   const module = getModule(parts[0]);
   if (!module) return null;
   const view = VIEWS.includes(parts[1] as ViewName) ? (parts[1] as ViewName) : 'dashboard';
@@ -14,7 +15,9 @@ function parseHash(hash: string): Route | null {
 }
 
 function routeToHash(route: Route): string {
-  return route.kind === 'settings' ? '#/settings' : `#/${route.moduleId}/${route.view}`;
+  if (route.kind === 'settings') return '#/settings';
+  if (route.kind === 'tools') return '#/tools';
+  return `#/${route.moduleId}/${route.view}`;
 }
 
 /**
