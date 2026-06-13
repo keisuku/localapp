@@ -4,7 +4,10 @@ import type { ParsedTable } from '@/core/types/import';
 import { moduleRegistry } from '@/modules';
 
 export type ViewName = 'dashboard' | 'table' | 'card' | 'kanban';
-export type Route = { kind: 'module'; moduleId: string; view: ViewName } | { kind: 'settings' };
+export type Route =
+  | { kind: 'module'; moduleId: string; view: ViewName }
+  | { kind: 'tools' }
+  | { kind: 'settings' };
 
 export interface DrawerState {
   mode: 'view' | 'edit' | 'create';
