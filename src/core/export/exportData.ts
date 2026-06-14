@@ -2,6 +2,11 @@ import * as XLSX from 'xlsx';
 import type { AppRecord } from '@/core/types/record';
 import type { FieldDef, ModuleDefinition } from '@/core/types/module';
 import { statusLabel, optionLabel } from '@/core/moduleUtils';
+import {
+  DIFF_STATUS_LABEL,
+  type CompareMapping,
+  type CompareRow,
+} from '@/core/compare/buildComparison';
 
 export type ExportFormat = 'xlsx' | 'csv' | 'json';
 
@@ -61,6 +66,50 @@ function exportCell(field: FieldDef, v: unknown, format: ExportFormat): unknown 
     out = `'${out}`;
   }
   return out;
+}
+
+/** CSV インジェクション対策：数式に解釈されうる先頭文字をエスケープ */
+function csvSafe(v: unknown, format: 'xlsx' | 'csv'): unknown {
+  if (format === 'csv' && typeof v === 'string' && /^[=+\-@\t]/.test(v)) return `'${v}`;
+  return v;
+}
+
+/** 比較結果（表示中＝差分のみ適用後の行）を Excel / CSV で出力する */
+export function exportComparison(
+  rows: CompareRow[],
+  mapping: CompareMapping,
+  labels: { before: string; after: string },
+  format: 'xlsx' | 'csv',
+): void {
+  const headers = [
+    mapping.keyHeader,
+    ...mapping.categoryHeaders,
+    labels.before,
+    labels.after,
+    '差分',
+    '差分率(%)',
+    '状態',
+  ];
+  const matrix = rows.map((r) => [
+    csvSafe(r.keyValue, format),
+    ...r.categoryValues.map((c) => csvSafe(c, format)),
+    r.before ?? '',
+    r.after ?? '',
+    r.diff,
+    r.diffPct === null ? '' : Math.round(r.diffPct * 10) / 10,
+    DIFF_STATUS_LABEL[r.status],
+  ]);
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...matrix]);
+  const base = `compare-${dateStamp()}`;
+
+  if (format === 'xlsx') {
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '差分');
+    XLSX.writeFile(wb, `${base}.xlsx`);
+    return;
+  }
+  const csv = '﻿' + XLSX.utils.sheet_to_csv(ws);
+  downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), `${base}.csv`);
 }
 
 export function downloadBlob(blob: Blob, fileName: string): void {

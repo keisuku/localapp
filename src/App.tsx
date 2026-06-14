@@ -7,7 +7,7 @@ import { StatusBar } from '@/components/layout/StatusBar';
 import { CommandPalette } from '@/components/layout/CommandPalette';
 import { ViewContainer } from '@/components/views/ViewContainer';
 import { SettingsView } from '@/components/settings/SettingsView';
-import { DataToolsView } from '@/components/tools/DataToolsView';
+import { ComparePage } from '@/components/compare/ComparePage';
 import { DetailDrawer } from '@/components/record/DetailDrawer';
 import { DropZone } from '@/components/import/DropZone';
 import { ImportWizard } from '@/components/import/ImportWizard';
@@ -64,8 +64,10 @@ export default function App() {
             <div className="min-h-0 flex-1">
               <SettingsView />
             </div>
-          ) : route.kind === 'tools' ? (
-            <DataToolsView />
+          ) : route.kind === 'compare' ? (
+            <div className="min-h-0 flex-1">
+              <ComparePage />
+            </div>
           ) : (
             <ViewContainer />
           )}

@@ -66,6 +66,7 @@ export function ViewContainer() {
               </Button>
             </>
           }
+          footer="Excel / CSV / JSON は画面のどこにでもドラッグ＆ドロップで取り込めます"
         />
       );
     }

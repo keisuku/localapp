@@ -6,8 +6,8 @@ import { moduleRegistry } from '@/modules';
 export type ViewName = 'dashboard' | 'table' | 'card' | 'kanban';
 export type Route =
   | { kind: 'module'; moduleId: string; view: ViewName }
-  | { kind: 'tools' }
-  | { kind: 'settings' };
+  | { kind: 'settings' }
+  | { kind: 'compare' };
 
 export interface DrawerState {
   mode: 'view' | 'edit' | 'create';

@@ -14,6 +14,7 @@ import {
   FileJson,
   FileSpreadsheet,
   FileText,
+  GitCompareArrows,
   Keyboard,
   Moon,
   Plus,
@@ -165,6 +166,10 @@ export function CommandPalette() {
               {m.labels.moduleName}
             </CommandItem>
           ))}
+          <CommandItem onSelect={() => run(() => navigate({ kind: 'compare' }))}>
+            <GitCompareArrows />
+            予実・差分ツール
+          </CommandItem>
           <CommandItem onSelect={() => run(() => navigate({ kind: 'settings' }))}>
             <Settings />
             設定・データ管理

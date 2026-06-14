@@ -73,14 +73,14 @@ export function Sidebar() {
         <button
           className={cn(
             'flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
-            route.kind === 'tools'
+            route.kind === 'compare'
               ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
               : 'hover:bg-sidebar-accent/50',
           )}
-          onClick={() => navigate({ kind: 'tools' })}
+          onClick={() => navigate({ kind: 'compare' })}
         >
           <GitCompareArrows className="size-4" />
-          業務データ工房
+          予実・差分ツール
         </button>
         <button
           className={cn(

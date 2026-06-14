@@ -28,6 +28,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { CommandPaletteButton } from '@/components/layout/CommandPaletteButton';
 import { useAppStore, type ViewName } from '@/core/store/useAppStore';
 import { useVisibleRecords } from '@/hooks/useVisibleRecords';
 import { exportRecords, type ExportFormat } from '@/core/export/exportData';
@@ -65,9 +66,11 @@ export function TopBar() {
   );
 
   if (route.kind !== 'module' || !module) {
+    const title = route.kind === 'compare' ? '予実・差分ツール' : '設定・データ管理';
     return (
       <header className="bg-card flex h-13 items-center gap-3 border-b px-4">
-        <h1 className="text-base font-semibold">設定・データ管理</h1>
+        <h1 className="text-base font-semibold">{title}</h1>
+        <CommandPaletteButton className="ml-auto" />
       </header>
     );
   }
@@ -116,6 +119,7 @@ export function TopBar() {
       </div>
 
       <div className="ml-auto flex shrink-0 items-center gap-1.5">
+        <CommandPaletteButton />
         <Button
           variant={filterPanelOpen || conditions.length > 0 ? 'secondary' : 'ghost'}
           size="sm"
