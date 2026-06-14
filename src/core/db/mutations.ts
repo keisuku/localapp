@@ -71,10 +71,20 @@ export async function createRecord(
   return record;
 }
 
+type UpdateRecordOptions = {
+  /** Undo トーストを表示しない（インライン編集などの即時保存向け） */
+  silent?: boolean;
+  /**
+   * true の場合、patch.data をフォーム保存時の完全な data として扱う。
+   * 省略時は既存 data への部分更新としてマージする。
+   */
+  replaceData?: boolean;
+};
+
 export async function updateRecord(
   id: string,
   patch: { data?: Record<string, unknown>; status?: string; tags?: string[] },
-  options: { silent?: boolean } = {},
+  options: UpdateRecordOptions = {},
 ): Promise<void> {
   const prev = await db.records.get(id);
   if (!prev) return;
@@ -84,7 +94,9 @@ export async function updateRecord(
     ...(patch.tags !== undefined ? { tags: patch.tags } : {}),
     ...(patch.data !== undefined
       ? (() => {
-          const data = sanitizeData({ ...prev.data, ...patch.data });
+          const data = options.replaceData
+            ? sanitizeData(patch.data)
+            : sanitizeData({ ...prev.data, ...patch.data });
           return { data, score: computeScore(prev.moduleId, data) };
         })()
       : {}),

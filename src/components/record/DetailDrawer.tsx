@@ -111,7 +111,11 @@ export function DetailDrawer() {
       });
       openDrawer({ mode: 'view', recordId: created.id });
     } else if (record) {
-      await updateRecord(record.id, { data: draft, status: draftStatus, tags: draftTags });
+      await updateRecord(
+        record.id,
+        { data: draft, status: draftStatus, tags: draftTags },
+        { replaceData: true },
+      );
       openDrawer({ mode: 'view', recordId: record.id });
     }
   };
