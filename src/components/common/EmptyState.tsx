@@ -7,12 +7,15 @@ export function EmptyState({
   title,
   description,
   actions,
+  footer,
   className,
 }: {
   icon: ReactNode;
   title: string;
   description?: string;
   actions?: ReactNode;
+  /** CTA の下に薄く添える補足（操作のヒントなど） */
+  footer?: ReactNode;
   className?: string;
 }) {
   return (
@@ -34,6 +37,7 @@ export function EmptyState({
         )}
       </div>
       {actions && <div className="flex flex-wrap items-center justify-center gap-2">{actions}</div>}
+      {footer && <div className="text-muted-foreground text-xs">{footer}</div>}
     </div>
   );
 }

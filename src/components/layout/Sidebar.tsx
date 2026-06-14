@@ -1,4 +1,4 @@
-import { Settings, LayoutGrid } from 'lucide-react';
+import { Settings, LayoutGrid, GitCompareArrows } from 'lucide-react';
 import { moduleRegistry } from '@/modules';
 import { useAppStore } from '@/core/store/useAppStore';
 import { useModuleCounts } from '@/core/db/queries';
@@ -70,6 +70,18 @@ export function Sidebar() {
       </nav>
 
       <div className="border-sidebar-border space-y-0.5 border-t p-2">
+        <button
+          className={cn(
+            'flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
+            route.kind === 'compare'
+              ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+              : 'hover:bg-sidebar-accent/50',
+          )}
+          onClick={() => navigate({ kind: 'compare' })}
+        >
+          <GitCompareArrows className="size-4" />
+          予実・差分比較
+        </button>
         <button
           className={cn(
             'flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
