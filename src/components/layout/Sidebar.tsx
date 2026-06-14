@@ -80,7 +80,7 @@ export function Sidebar() {
           onClick={() => navigate({ kind: 'compare' })}
         >
           <GitCompareArrows className="size-4" />
-          予実・差分比較
+          予実・差分ツール
         </button>
         <button
           className={cn(

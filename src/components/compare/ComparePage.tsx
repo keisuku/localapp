@@ -23,6 +23,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Scale, Merge, GitCompareArrows } from 'lucide-react';
+import { MergeTab, KeyDiffTab } from './dataTools';
 import { FileDropSlot } from './FileDropSlot';
 import { sampleActualTable, sampleBudgetTable } from './sampleTables';
 import type { ParsedTable } from '@/core/types/import';
@@ -126,7 +129,53 @@ function Money({ value, strong }: { value: number | null; strong?: boolean }) {
   return <span className={cn('tabular', strong && 'font-semibold')}>{formatCurrency(value)}</span>;
 }
 
+/**
+ * 「2つのファイルを突き合わせる」操作を1か所に集約した画面。
+ * - 予実・金額差分：キー＋区分で金額を集計し、前回/今回の差分を出す
+ * - 名寄せ・一括更新：基準＋更新ファイルをキー突合
+ * - キー差分比較：セル/列単位の追加・削除・変更を一覧化
+ */
 export function ComparePage() {
+  return (
+    <div className="h-full overflow-y-auto">
+      <div className="mx-auto max-w-5xl space-y-5 p-5">
+        <div className="space-y-1">
+          <h2 className="text-lg font-semibold">予実・差分ツール</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            2つのExcel / CSVをブラウザ内だけで突き合わせ、差分・名寄せの結果をExcelに出力します。
+          </p>
+        </div>
+        <Tabs defaultValue="budget">
+          <TabsList>
+            <TabsTrigger value="budget">
+              <Scale className="size-4" />
+              予実・金額差分
+            </TabsTrigger>
+            <TabsTrigger value="merge">
+              <Merge className="size-4" />
+              名寄せ・一括更新
+            </TabsTrigger>
+            <TabsTrigger value="keydiff">
+              <GitCompareArrows className="size-4" />
+              キー差分比較
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="budget" className="mt-4">
+            <BudgetActualTab />
+          </TabsContent>
+          <TabsContent value="merge" className="mt-4">
+            <MergeTab />
+          </TabsContent>
+          <TabsContent value="keydiff" className="mt-4">
+            <KeyDiffTab />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+}
+
+function BudgetActualTab() {
   const [before, setBefore] = useState<ParsedTable | null>(null);
   const [after, setAfter] = useState<ParsedTable | null>(null);
   const [mapping, setMapping] = useState<CompareMapping | null>(null);
@@ -180,11 +229,9 @@ export function ComparePage() {
   };
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-5xl space-y-5 p-5">
-        {/* ヘッダ：このページでできること */}
-        <div className="space-y-1">
-          <h2 className="text-lg font-semibold">予実・差分比較</h2>
+    <div className="space-y-5">
+      {/* 説明＋ステップ：次に何をすればいいかが一目で分かる */}
+      <div className="space-y-1">
           <p className="text-muted-foreground text-sm leading-relaxed">
             2つのExcelを入れるだけで、<b>増えた・減った・変わった</b>金額が出ます。前回／今回（予算／実績）を突き合わせ、差分だけをExcelに出力できます。
           </p>
@@ -403,7 +450,6 @@ export function ComparePage() {
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }

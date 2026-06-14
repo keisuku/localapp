@@ -168,7 +168,7 @@ export function CommandPalette() {
           ))}
           <CommandItem onSelect={() => run(() => navigate({ kind: 'compare' }))}>
             <GitCompareArrows />
-            予実・差分比較
+            予実・差分ツール
           </CommandItem>
           <CommandItem onSelect={() => run(() => navigate({ kind: 'settings' }))}>
             <Settings />

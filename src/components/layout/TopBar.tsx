@@ -66,7 +66,7 @@ export function TopBar() {
   );
 
   if (route.kind !== 'module' || !module) {
-    const title = route.kind === 'compare' ? '予実・差分比較' : '設定・データ管理';
+    const title = route.kind === 'compare' ? '予実・差分ツール' : '設定・データ管理';
     return (
       <header className="bg-card flex h-13 items-center gap-3 border-b px-4">
         <h1 className="text-base font-semibold">{title}</h1>
